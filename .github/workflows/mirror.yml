@@ -1,4 +1,4 @@
-name: Mirror-Repo
+name: Mirror Repo
 
 on:
   push:
@@ -38,6 +38,7 @@ on:
 
   jobs:
     build-on-ubuntu:
+      name: build on ubuntu
       runs-on: ubuntu-latest
       steps:
         - uses: actions/checkout@v2
