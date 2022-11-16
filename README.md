@@ -1,2 +1,2 @@
 # Gomoku
-An IA to win at go
+An IA to win at gomoku
