@@ -36,10 +36,35 @@ jobs:
         if: env.FAIL_TASK == 'true'
         run: exit 1
 
+  build-on-ubuntu:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - name: Install pytest
+        uses: BSFishy/pip-action@v1
+        with:
+          packages: |
+            pytest
+            pytest-cov
+            make
+      - name: Build Gomoku binaries
+        run: make re
+
+      - name: Check Gomoku build
+        run: |
+          test -f pbrain-gomoku-ai
+
   Mirror-Repo:
     name: Mirror repo
     needs:
       - Clean-Repo
+      - build-on-ubuntu
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
