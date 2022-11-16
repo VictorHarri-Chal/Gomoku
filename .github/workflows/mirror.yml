@@ -36,7 +36,6 @@ on:
           if: env.FAIL_TASK == 'true'
           run: exit 1
 
-  jobs:
     build-on-ubuntu:
       name: build on ubuntu
       runs-on: ubuntu-latest
