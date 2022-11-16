@@ -1,4 +1,4 @@
-name: Mirror repo
+name: Build
 
 on:
   push:
@@ -10,8 +10,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  Clean-Repo:
-    name: Clean repo
+  clean-repo:
+    name: clean repo
     runs-on: ubuntu-latest
     env:
       USELESS_FILES_REGEX: (.*\.gc(no|da|ov))$|(.*\.(a|o))$|(.*~)$|^(#.*#)$|^tmp\/.*|.*\/tmp\/.*
@@ -36,10 +36,36 @@ jobs:
         if: env.FAIL_TASK == 'true'
         run: exit 1
 
+jobs:
+  build-on-ubuntu:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - name: Install pytest
+        uses: BSFishy/pip-action@v1
+        with:
+          packages: |
+            pytest
+            pytest-cov
+            make
+      - name: Build Gomoku binaries
+        run: make re
+
+      - name: Check Gomoku build
+        run: |
+          test -f pbrain-gomoku-ai
+  
   Mirror-Repo:
-    name: Mirror repo
+    name: mirror repo
     needs:
-      - Clean-Repo
+      - clean-Repo
+      - build-on-ubuntu
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
