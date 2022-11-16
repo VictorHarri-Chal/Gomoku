@@ -1,4 +1,4 @@
-name: Mirror Repo
+name: Mirror repo
 
 on:
   push:
@@ -9,63 +9,37 @@ on:
       - main
   workflow_dispatch:
 
-  jobs:
-    clean-repo:
-      name: clean repo
-      runs-on: ubuntu-latest
-      env:
-        USELESS_FILES_REGEX: (.*\.gc(no|da|ov))$|(.*\.(a|o))$|(.*~)$|^(#.*#)$|^tmp\/.*|.*\/tmp\/.*
-      steps:
-        - name: Checkout repo
-          uses: actions/checkout@v2
-          with:
-            fetch-depth: 0
-        - name: Find useless files recursively
-          run: |
-            USELESS_FILES=$(find . -type f -printf '%P\n' | { grep -P "${{ env.USELESS_FILES_REGEX }}" || true; })
-            if [ "$USELESS_FILES" != "" ]; then
-                IFS=$'\n'$'\r'
-                for LINE in $USELESS_FILES; do
-                    echo "::error file=${LINE},line=1,col=1,title=Useless file detected::${LINE}"
-                done
-                echo "FAIL_TASK=true" >> "$GITHUB_ENV"
-            else
-                echo "FAIL_TASK=false" >> "$GITHUB_ENV"
-            fi
-        - name: Check if task failed
-          if: env.FAIL_TASK == 'true'
-          run: exit 1
+jobs:
+  Clean-Repo:
+    name: Clean repo
+    runs-on: ubuntu-latest
+    env:
+      USELESS_FILES_REGEX: (.*\.gc(no|da|ov))$|(.*\.(a|o))$|(.*~)$|^(#.*#)$|^tmp\/.*|.*\/tmp\/.*
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Find useless files recursively
+        run: |
+          USELESS_FILES=$(find . -type f -printf '%P\n' | { grep -P "${{ env.USELESS_FILES_REGEX }}" || true; })
+          if [ "$USELESS_FILES" != "" ]; then
+              IFS=$'\n'$'\r'
+              for LINE in $USELESS_FILES; do
+                  echo "::error file=${LINE},line=1,col=1,title=Useless file detected::${LINE}"
+              done
+              echo "FAIL_TASK=true" >> "$GITHUB_ENV"
+          else
+              echo "FAIL_TASK=false" >> "$GITHUB_ENV"
+          fi
+      - name: Check if task failed
+        if: env.FAIL_TASK == 'true'
+        run: exit 1
 
-    build-on-ubuntu:
-      name: build on ubuntu
-      runs-on: ubuntu-latest
-      steps:
-        - uses: actions/checkout@v2
-
-        - name: Install python
-          uses: actions/setup-python@v4
-          with:
-            python-version: "3.10"
-
-        - name: Install pytest
-          uses: BSFishy/pip-action@v1
-          with:
-            packages: |
-              pytest
-              pytest-cov
-              make
-        - name: Build Gomoku binaries
-          run: make re
-
-        - name: Check Gomoku build
-          run: |
-            test -f pbrain-gomoku-ai
-  
   Mirror-Repo:
-    name: mirror repo
+    name: Mirror repo
     needs:
-      - clean-Repo
-      - build-on-ubuntu
+      - Clean-Repo
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
