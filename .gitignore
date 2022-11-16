@@ -1,0 +1,7 @@
+venv/
+__pycache__/
+.idea/
+.coverage
+unit_tests.py
+.pytest_cache/
+pbrain-gomoku-ai
