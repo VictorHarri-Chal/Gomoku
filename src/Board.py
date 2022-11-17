@@ -25,7 +25,7 @@ class MyBoard:
         if (self.isCaseUsable(x, y) == True):
             self.board[x][y] = player
                 
-    def isCaseUsable(self, x, y):
+    def isCaseUsable(self, x, y) -> bool:
         if (x < self.boardSize and y < self.boardSize and x >= 0 and y >= 0):
             if (self.board[x][y] == 0):
                 return (True)

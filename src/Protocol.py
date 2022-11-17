@@ -48,7 +48,7 @@ class Protocol:
 
     # TURN [X][Y] : Where X and Y are the position of the opponent's move, the function return the position X,Y of the player's move
 
-    def turn(self, arg1):
+    def turn(self, arg1) -> str:
         try:
             value = arg1.split(',')
             value1 = int(value[0])
@@ -93,7 +93,7 @@ class Protocol:
     
     # INFO [KEY][VALUE] : The player don't need to answer this
 
-    def info(arg1, arg2):
+    def info(arg1, arg2) -> str:
         return ("")
 
     # END : The player have to quit as fast as possible and should not write anything more
