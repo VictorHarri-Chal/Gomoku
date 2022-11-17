@@ -8,6 +8,6 @@ class Game:
         self.protocol = Protocol()
         
     def run(self):
-        while (1):
+        while (True):
             self.protocol.readInput()
             self.protocol.computeInput()

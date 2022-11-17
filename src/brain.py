@@ -2,7 +2,7 @@
 
 import random
 
-def howManyPawnRightDiagonal(board, x, y):
+def howManyPawnRightDiagonal(board, x, y) -> int:
     nb = 1
     player = board[x][y]
     cnt = x + 1
@@ -19,7 +19,7 @@ def howManyPawnRightDiagonal(board, x, y):
             count += 1
     return (nb)
     
-def howManyPawnLeftDiagonal(board, x, y):
+def howManyPawnLeftDiagonal(board, x, y) -> int:
     nb = 1
     player = board[x][y]
     cnt = x + 1
@@ -36,7 +36,7 @@ def howManyPawnLeftDiagonal(board, x, y):
             count -= 1
     return (nb)
 
-def howManyPawnRight(board, x, y):
+def howManyPawnRight(board, x, y) -> int:
     nb = 1
     player = board[x][y]
     cnt = x + 1
@@ -50,7 +50,7 @@ def howManyPawnRight(board, x, y):
         cnt += 1
     return (nb)
 
-def howManyPawnLeft(board, x, y):
+def howManyPawnLeft(board, x, y) -> int:
     nb = 1
     player = board[x][y]
     cnt = x - 1
@@ -64,7 +64,7 @@ def howManyPawnLeft(board, x, y):
         cnt -= 1
     return (nb)
 
-def randPos(board, boardSize):
+def randPos(board, boardSize) -> tuple:
     x = random.randint(0, boardSize)
     y = random.randint(0, boardSize)
     while (board.isCaseUsable(x, y) == False):
@@ -72,13 +72,13 @@ def randPos(board, boardSize):
         y = random.randint(0, boardSize)
     return (x, y)
     
-def isWinnable(board, player):
+def isWinnable(board, player) -> str:
     for cnt in range(len(board)):
         for count in range(len(board[cnt])):
             if (board[cnt][count] == player):
                 return
     return (str(-1) + ',' + str(-1))
 
-def isLosable(board, player):
+def isLosable(board, player) -> str:
     
     return (str(-1) + ',' + str(-1))
