@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 from src.Board import *
+from src.brain import *
 
 # Print function with flush
 
@@ -39,6 +40,7 @@ class Protocol:
             if size < 5:
                 return ("ERROR message - unsupported size or other error\n")
             self.gameBoard.createBoard(size)
+            self.boardSize = size
             return ("OK - everything is good")
         except ValueError:
             return ("ERROR message - unsupported size or other error\n")
@@ -51,24 +53,20 @@ class Protocol:
             value1 = int(value[0])
             value2 = int(value[1])
             self.gameBoard.doMove(value1, value2, 2)
-            x = 0
-            y = 0
-            move = str(x)
-            move += ","
-            move += str(y)
-            return (move)
+            pos = randPos(self.gameBoard, self.boardSize)
+            move = str(pos[0]) + "," + str(pos[1]) + "\n"
+            self.gameBoard.doMove(pos[0], pos[1], 1)
+            self.output = move
         except ValueError:
             return ("ERROR")
 
     # BEGIN : The player have to play first, the function return the position X,Y of the player's move
 
     def begin(self):
-        x = 0
-        y = 0
-        move = str(x)
-        move += ","
-        move += str(y)
-        return (move)
+        pos = randPos(self.gameBoard, self.boardSize)
+        move = str(pos[0]) + "," + str(pos[1]) + "\n"
+        self.gameBoard.doMove(pos[0], pos[1], 1)
+        self.output = move
 
     # BOARD [X][Y][FIELD] : Where X and Y are position and FIELD is the player, the function have to return the position X,Y of the player's move
 
@@ -78,12 +76,10 @@ class Protocol:
             self.arg = self.input.split()
             nbArg = len(self.arg)
             if (nbArg == 1 and self.arg[0] == "DONE"):
-                x = 0
-                y = 0
-                move = str(x)
-                move += ","
-                move += str(y)
-                self.output = move + "\n"
+                pos = randPos(self.gameBoard, self.boardSize)
+                move = str(pos[0]) + "," + str(pos[1]) + "\n"
+                self.gameBoard.doMove(pos[0], pos[1], 1)
+                self.output = move
             elif (nbArg == 1):
                 value = self.arg[0].split(',')
                 pos_x = int(value[0])
