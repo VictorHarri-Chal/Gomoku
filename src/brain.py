@@ -23,8 +23,8 @@ def howManyPawnLeftDiagonal(board, x, y):
     nb = 1
     player = board[x][y]
     cnt = x + 1
-    count = y + 1
-    while cnt >= 0:
+    count = y - 1
+    while cnt < len(board):
         while count >= 0:
             if (board[cnt][count] == player):
                 nb += 1
@@ -32,8 +32,36 @@ def howManyPawnLeftDiagonal(board, x, y):
                 return nb
             if (board[cnt][count] == 5):
                 return nb
-            cnt -= 1
+            cnt += 1
             count -= 1
+    return (nb)
+
+def howManyPawnRight(board, x, y):
+    nb = 1
+    player = board[x][y]
+    cnt = x + 1
+    while cnt < len(board):
+        if (board[cnt][y] == player):
+            nb += 1
+        else:
+            return nb
+        if (board[cnt][y] == 5):
+            return nb
+        cnt += 1
+    return (nb)
+
+def howManyPawnLeft(board, x, y):
+    nb = 1
+    player = board[x][y]
+    cnt = x - 1
+    while cnt >= 0:
+        if (board[cnt][y] == player):
+            nb += 1
+        else:
+            return nb
+        if (board[cnt][y] == 5):
+            return nb
+        cnt -= 1
     return (nb)
 
 def randPos(board, boardSize):
