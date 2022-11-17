@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 
+from src.brain import *
+
 class MyBoard:
     
     def __init__(self):
@@ -16,6 +18,9 @@ class MyBoard:
             print(self.board[cnt])
             cnt += 1
             
+    def getBoard(self):
+        return (self.board)
+    
     def doMove(self, x, y, player):
         if (self.isCaseUsable(x, y) == True):
             self.board[x][y] = player
