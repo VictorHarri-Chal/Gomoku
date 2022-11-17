@@ -35,12 +35,13 @@ class Protocol:
         try:
             size = int(value)
             if size < 5:
-                return ("ERROR message - unsupported size or other error\n")
+                self.output = "ERROR message - unsupported size or other error\n"
+                return
             self.gameBoard.createBoard(size)
             self.boardSize = size
-            return ("OK - everything is good")
+            self.output = "OK - everything is good\n"
         except ValueError:
-            return ("ERROR message - unsupported size or other error\n")
+            self.output = "ERROR message - unsupported size or other error\n"
 
     # TURN [X][Y] : Where X and Y are the position of the opponent's move, the function return the position X,Y of the player's move
 
