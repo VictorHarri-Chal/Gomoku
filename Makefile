@@ -15,8 +15,6 @@ TESTS_NAME	=	./unit_tests.py
 
 CP			=	cp
 
-MV			=	mv
-
 CHMOD		=	chmod
 
 EXEC_RIGHTS	=	+x
@@ -26,8 +24,7 @@ RM			=	rm -rf
 all: $(NAME)
 
 $(NAME):
-	$(CP) src/$(SRC) ./
-	$(MV) $(SRC) $(NAME)
+	$(CP) $(SRC) $(NAME)
 	$(CHMOD) $(EXEC_RIGHTS) $(NAME)
 
 tests_run: all

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from src.Protocol import *
+from protocol import *
 
 class Game:
     def __init__(self):
