@@ -21,7 +21,10 @@ class Protocol:
     # Read input and stock it in self.input
     
     def readInput(self):
-        self.input = input()
+        try:
+            self.input = input()
+        except:
+            exit(0)
 
     # Print output which is in self.output
     
