@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+
 import sys
 from src.Game import Game
 
