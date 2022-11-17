@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
-from src.Board import *
-from src.brain import *
+from board import *
+from brain import *
 
 # Print function with flush
 
