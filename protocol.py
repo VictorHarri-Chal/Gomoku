@@ -2,6 +2,7 @@
 
 from board import *
 from brain import *
+from timer import *
 
 # Print function with flush
 
@@ -38,13 +39,13 @@ class Protocol:
         try:
             size = int(value)
             if size < 5:
-                self.output = "ERROR message\n"
+                self.output = "ERROR wrong size\n"
                 return
             self.gameBoard.createBoard(size)
             self.boardSize = size
             self.output = "OK\n"
         except ValueError:
-            self.output = "ERROR message\n"
+            self.output = "ERROR can't create the board\n"
 
     # TURN [X][Y] : Where X and Y are the position of the opponent's move, the function return the position X,Y of the player's move
 
@@ -54,12 +55,15 @@ class Protocol:
             value1 = int(value[0])
             value2 = int(value[1])
             self.gameBoard.doMove(value1, value2, 2)
+            t = Timer()
+            t.start()
             pos = randPos(self.gameBoard, self.boardSize)
+            t.stop()
             move = str(pos[0]) + "," + str(pos[1]) + "\n"
             self.gameBoard.doMove(pos[0], pos[1], 1)
             self.output = move
         except ValueError:
-            return ("ERROR message\n")
+            return ("ERROR turn command\n")
 
     # BEGIN : The player have to play first, the function return the position X,Y of the player's move
 
