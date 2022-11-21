@@ -5,5 +5,7 @@ __pycache__/
 unit_tests.py
 .pytest_cache/
 pbrain-gomoku-ai
-pbrain-pela.exe
-piskvork.exe
+dist/
+build/
+pbrain.exe
+pbrain.spec
