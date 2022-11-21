@@ -12,15 +12,13 @@ MATCHING = Enum('Matching', ['RIGHT', 'LEFT', 'DIAG_RIGHT', 'DIAG_LEFT', 'DOWN',
 def match_right(board, patern, x, y):
     size = board.getSizeBoard()
     gameBoard = board.getBoard()
-    print("\npatern =", patern, flush=True)
     for cnt in range(len(patern)): 
         if ((cnt + y) < size):
-            print(gameBoard[x][y + cnt], end="", flush =True)
-            print(patern[cnt], end="", flush =True)
             if (gameBoard[x][y + cnt] != patern[cnt]):
-                print("False", flush=True)
+                print(gameBoard[x][y + cnt], end="", flush =True)
+                print(patern[cnt], end="", flush =True)
+                print(" = False!", flush=True)
                 return (False)
-            print("True", flush=True)
         else:
             return (False)
     return (True)

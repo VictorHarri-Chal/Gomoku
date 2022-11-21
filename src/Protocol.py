@@ -92,12 +92,12 @@ class Protocol:
                 res_match = is_matching_pattern(self.gameBoard, paternsAlly)
                 res_match_enemy = is_matching_pattern(self.gameBoard, paternsEnemy)
                 if (res_match[0] == True):
-                    self.gameBoard.doMove(res_match[1], res_match[2], 1)
-                    move = str(res_match[1] + "," + str(res_match[2]))
+                    self.gameBoard.doMove(int(res_match[1]), int(res_match[2]), 1)
+                    move = str(res_match[1]) + "," + str(res_match[2])
                     self.output = move
                 elif (res_match_enemy[0] == True):
-                    self.gameBoard.doMove(res_match_enemy[1], res_match_enemy[2], 1)
-                    move = str(res_match_enemy[1] + "," + str(res_match_enemy[2]))
+                    self.gameBoard.doMove(int(res_match_enemy[1]), int(res_match_enemy[2]), 1)
+                    move = str(res_match_enemy[1]) + "," + str(res_match_enemy[2])
                     self.output = move
                 else:
                     pos = randPos(self.gameBoard, self.boardSize)
