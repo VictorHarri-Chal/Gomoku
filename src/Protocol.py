@@ -2,6 +2,7 @@
 
 from src.Board import *
 from src.brain import *
+from src.Paterns import *
 
 # Print function with flush
 
@@ -54,10 +55,21 @@ class Protocol:
             value1 = int(value[0])
             value2 = int(value[1])
             self.gameBoard.doMove(value1, value2, 2)
-            pos = randPos(self.gameBoard, self.boardSize)
-            move = str(pos[0]) + "," + str(pos[1]) + "\n"
-            self.gameBoard.doMove(pos[0], pos[1], 1)
-            self.output = move
+            res_match = is_matching_pattern(self.gameBoard, paternsAlly)
+            res_match_enemy = is_matching_pattern(self.gameBoard, paternsEnemy)
+            if (res_match[0] == True):
+                self.gameBoard.doMove(res_match[1], res_match[2], 1)
+                move = str(res_match[1] + "," + str(res_match[2]))
+                self.output = move
+            elif (res_match_enemy[0] == True):
+                self.gameBoard.doMove(res_match_enemy[1], res_match_enemy[2], 1)
+                move = str(res_match_enemy[1] + "," + str(res_match_enemy[2]))
+                self.output = move
+            else:
+                pos = randPos(self.gameBoard, self.boardSize)
+                move = str(pos[0]) + "," + str(pos[1]) + "\n"
+                self.gameBoard.doMove(pos[0], pos[1], 1)
+                self.output = move
         except ValueError:
             return ("ERROR")
 
@@ -77,10 +89,21 @@ class Protocol:
             self.arg = self.input.split()
             nbArg = len(self.arg)
             if (nbArg == 1 and self.arg[0] == "DONE"):
-                pos = randPos(self.gameBoard, self.boardSize)
-                move = str(pos[0]) + "," + str(pos[1]) + "\n"
-                self.gameBoard.doMove(pos[0], pos[1], 1)
-                self.output = move
+                res_match = is_matching_pattern(self.gameBoard, paternsAlly)
+                res_match_enemy = is_matching_pattern(self.gameBoard, paternsEnemy)
+                if (res_match[0] == True):
+                    self.gameBoard.doMove(res_match[1], res_match[2], 1)
+                    move = str(res_match[1] + "," + str(res_match[2]))
+                    self.output = move
+                elif (res_match_enemy[0] == True):
+                    self.gameBoard.doMove(res_match_enemy[1], res_match_enemy[2], 1)
+                    move = str(res_match_enemy[1] + "," + str(res_match_enemy[2]))
+                    self.output = move
+                else:
+                    pos = randPos(self.gameBoard, self.boardSize)
+                    move = str(pos[0]) + "," + str(pos[1]) + "\n"
+                    self.gameBoard.doMove(pos[0], pos[1], 1)
+                    self.output = move
             elif (nbArg == 1):
                 value = self.arg[0].split(',')
                 pos_x = int(value[0])

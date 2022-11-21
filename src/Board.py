@@ -21,6 +21,9 @@ class MyBoard:
     def getBoard(self):
         return (self.board)
     
+    def getSizeBoard(self):
+        return (self.boardSize)
+    
     def doMove(self, x, y, player):
         if (self.isCaseUsable(x, y) == True):
             self.board[x][y] = player
@@ -30,3 +33,7 @@ class MyBoard:
             if (self.board[x][y] == 0):
                 return (True)
         return (False)
+    
+    def getStringForPattern(self, x, y, size):
+        string = ""
+        return (string)
