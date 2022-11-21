@@ -1,8 +1,9 @@
 #!/usr/bin/python3
 
-from src.Board import *
-from src.brain import *
-from src.Paterns import *
+from paterns import *
+from board import *
+from brain import *
+from timer import *
 
 # Print function with flush
 
@@ -39,24 +40,26 @@ class Protocol:
         try:
             size = int(value)
             if size < 5:
-                self.output = "ERROR message - unsupported size or other error\n"
+                self.output = "ERROR wrong size\n"
                 return
             self.gameBoard.createBoard(size)
             self.boardSize = size
-            self.output = "OK - everything is good\n"
+            self.output = "OK\n"
         except ValueError:
-            self.output = "ERROR message - unsupported size or other error\n"
+            self.output = "ERROR can't create the board\n"
 
     # TURN [X][Y] : Where X and Y are the position of the opponent's move, the function return the position X,Y of the player's move
 
     def turn(self, arg1) -> str:
         try:
+            t = Timer()
+            t.start()
             value = arg1.split(',')
             value1 = int(value[0])
             value2 = int(value[1])
             self.gameBoard.doMove(value1, value2, 2)
-            res_match = is_matching_pattern(self.gameBoard, paternsAlly)
-            res_match_enemy = is_matching_pattern(self.gameBoard, paternsEnemy)
+            res_match = is_matching_pattern(self.gameBoard, paternsAlly1)
+            res_match_enemy = is_matching_pattern(self.gameBoard, paternsEnemy1)
             if (res_match[0] == True):
                 self.gameBoard.doMove(res_match[1], res_match[2], 1)
                 move = str(res_match[1] + "," + str(res_match[2]))
@@ -70,8 +73,9 @@ class Protocol:
                 move = str(pos[0]) + "," + str(pos[1]) + "\n"
                 self.gameBoard.doMove(pos[0], pos[1], 1)
                 self.output = move
+            t.stop()
         except ValueError:
-            return ("ERROR")
+            return ("ERROR turn command\n")
 
     # BEGIN : The player have to play first, the function return the position X,Y of the player's move
 
@@ -89,8 +93,8 @@ class Protocol:
             self.arg = self.input.split()
             nbArg = len(self.arg)
             if (nbArg == 1 and self.arg[0] == "DONE"):
-                res_match = is_matching_pattern(self.gameBoard, paternsAlly)
-                res_match_enemy = is_matching_pattern(self.gameBoard, paternsEnemy)
+                res_match = is_matching_pattern(self.gameBoard, paternsAlly1)
+                res_match_enemy = is_matching_pattern(self.gameBoard, paternsEnemy1)
                 if (res_match[0] == True):
                     self.gameBoard.doMove(int(res_match[1]), int(res_match[2]), 1)
                     move = str(res_match[1]) + "," + str(res_match[2])

@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-from src.brain import *
+from brain import *
 
 class MyBoard:
     
