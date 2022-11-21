@@ -52,8 +52,8 @@ class Protocol:
 
     def turn(self, arg1) -> str:
         try:
-            t = Timer()
-            t.start()
+            # t = Timer()
+            # t.start()
             value = arg1.split(',')
             value1 = int(value[0])
             value2 = int(value[1])
@@ -73,7 +73,7 @@ class Protocol:
                 move = str(pos[0]) + "," + str(pos[1]) + "\n"
                 self.gameBoard.doMove(pos[0], pos[1], 1)
                 self.output = move
-            t.stop()
+            # t.stop()
         except ValueError:
             return ("ERROR turn command\n")
 
