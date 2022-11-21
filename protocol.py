@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+from paterns import *
 from board import *
 from brain import *
 from timer import *
@@ -51,17 +52,28 @@ class Protocol:
 
     def turn(self, arg1) -> str:
         try:
+            t = Timer()
+            t.start()
             value = arg1.split(',')
             value1 = int(value[0])
             value2 = int(value[1])
             self.gameBoard.doMove(value1, value2, 2)
-            t = Timer()
-            t.start()
-            pos = randPos(self.gameBoard, self.boardSize)
+            res_match = is_matching_pattern(self.gameBoard, paternsAlly1)
+            res_match_enemy = is_matching_pattern(self.gameBoard, paternsEnemy1)
+            if (res_match[0] == True):
+                self.gameBoard.doMove(res_match[1], res_match[2], 1)
+                move = str(res_match[1] + "," + str(res_match[2]))
+                self.output = move + "\n"
+            elif (res_match_enemy[0] == True):
+                self.gameBoard.doMove(res_match_enemy[1], res_match_enemy[2], 1)
+                move = str(res_match_enemy[1] + "," + str(res_match_enemy[2]))
+                self.output = move + "\n"
+            else:
+                pos = randPos(self.gameBoard, self.boardSize)
+                move = str(pos[0]) + "," + str(pos[1]) + "\n"
+                self.gameBoard.doMove(pos[0], pos[1], 1)
+                self.output = move
             t.stop()
-            move = str(pos[0]) + "," + str(pos[1]) + "\n"
-            self.gameBoard.doMove(pos[0], pos[1], 1)
-            self.output = move
         except ValueError:
             return ("ERROR turn command\n")
 
@@ -81,10 +93,21 @@ class Protocol:
             self.arg = self.input.split()
             nbArg = len(self.arg)
             if (nbArg == 1 and self.arg[0] == "DONE"):
-                pos = randPos(self.gameBoard, self.boardSize)
-                move = str(pos[0]) + "," + str(pos[1]) + "\n"
-                self.gameBoard.doMove(pos[0], pos[1], 1)
-                self.output = move
+                res_match = is_matching_pattern(self.gameBoard, paternsAlly1)
+                res_match_enemy = is_matching_pattern(self.gameBoard, paternsEnemy1)
+                if (res_match[0] == True):
+                    self.gameBoard.doMove(int(res_match[1]), int(res_match[2]), 1)
+                    move = str(res_match[1]) + "," + str(res_match[2])
+                    self.output = move + "\n"
+                elif (res_match_enemy[0] == True):
+                    self.gameBoard.doMove(int(res_match_enemy[1]), int(res_match_enemy[2]), 1)
+                    move = str(res_match_enemy[1]) + "," + str(res_match_enemy[2])
+                    self.output = move + "\n"
+                else:
+                    pos = randPos(self.gameBoard, self.boardSize)
+                    move = str(pos[0]) + "," + str(pos[1]) + "\n"
+                    self.gameBoard.doMove(pos[0], pos[1], 1)
+                    self.output = move
             elif (nbArg == 1):
                 value = self.arg[0].split(',')
                 pos_x = int(value[0])
