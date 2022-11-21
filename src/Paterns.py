@@ -12,75 +12,84 @@ MATCHING = Enum('Matching', ['RIGHT', 'LEFT', 'DIAG_RIGHT', 'DIAG_LEFT', 'DOWN',
 def match_right(board, patern, x, y):
     size = board.getSizeBoard()
     gameBoard = board.getBoard()
-    for cnt in range(len(patern)): 
-        if ((cnt + y) < size):
-            if (gameBoard[x][y + cnt] != patern[cnt]):
-                print(gameBoard[x][y + cnt], end="", flush =True)
-                print(patern[cnt], end="", flush =True)
-                print(" = False!", flush=True)
+    for letter in patern:
+        if (y < size):
+            if (str(gameBoard[x][y]) != str(letter)):
                 return (False)
+            else:
+                y += 1
         else:
             return (False)
     return (True)
 
 def match_left(board, patern, x, y):
     size = board.getSizeBoard()
-    for cnt in range(len(patern)):
-        if ((x - cnt) >= 0):
-            if (board.getBoard()[x - cnt][y] != patern[cnt]):
+    gameBoard = board.getBoard()
+    for letter in patern:
+        if (y >= 0):
+            if (str(gameBoard[x][y]) != str(letter)):
                 return (False)
+            else:
+                y -= 1
         else:
             return (False)
     return (True)
 
 def match_diag_right(board, patern, x, y):
     size = board.getSizeBoard()
-    for cnt in range(len(patern)):
-        if ((cnt + x) < size and (cnt + y) < size):
-            if (board.getBoard()[cnt + x][y + cnt] != patern[cnt]):
+    gameBoard = board.getBoard()
+    for letter in patern:
+        if (y < size and x < size):
+            if (str(gameBoard[x][y]) != str(letter)):
                 return (False)
+            else:
+                y += 1
+                x += 1
         else:
             return (False)
     return (True)
 
 def match_diag_left(board, patern, x, y):
     size = board.getSizeBoard()
-    for cnt in range(len(patern)):
-        if ((cnt + x) < size and (y - cnt) >= 0):
-            if (board.getBoard()[cnt + x][y - cnt] != patern[cnt]):
+    gameBoard = board.getBoard()
+    for letter in patern:
+        if (x < size and y >= 0):
+            if (str(gameBoard[x][y]) != str(letter)):
                 return (False)
+            else:
+                y -= 1
+                x += 1
         else:
             return (False)
     return (True)
 
 def match_down(board, patern, x, y):
     size = board.getSizeBoard()
-    for cnt in range(len(patern)):
-        if ((y + cnt) < size):
-            if (board.getBoard()[cnt][y + cnt] != patern[cnt]):
+    gameBoard = board.getBoard()
+    for letter in patern:
+        if (x < size):
+            if (str(gameBoard[x][y]) != str(letter)):
                 return (False)
+            else:
+                x += 1
         else:
             return (False)
     return (True)
 
 def is_matching_pattern(board, paternsType):
+    index = 0
     for patern in paternsType:
         for x in range(board.getSizeBoard()):
             for y in range(board.getSizeBoard()):
                 if (match_right(board, patern, x, y) == True):
-                    print("MATCH", flush=True)
-                    return (True, x, y)
-                # if (match_left(board, patern, x, y) == True):
-                #     print("MATCH", flush=True)
-                #     return (True, x, y)
-                # if (match_diag_right(board, patern, x, y) == True):
-                #     print("MATCH", flush=True)
-                #     return (True, x, y)
-                # if (match_diag_left(board, patern, x, y) == True):
-                #     print("MATCH", flush=True)
-                #     return (True, x, y)
-                # if (match_down(board, patern, x, y) == True):
-                #     print("MATCH", flush=True)
-                #     return (True, x, y)
-    print("PAS DE MATCH", flush=True)
+                    return (True, x, (y + index))
+                if (match_left(board, patern, x, y) == True):
+                    return (True, x, (y - index))
+                if (match_diag_right(board, patern, x, y) == True):
+                    return (True, (x + index), (y + index))
+                if (match_diag_left(board, patern, x, y) == True):
+                    return (True, (x + index), (y - index))
+                if (match_down(board, patern, x, y) == True):
+                    return (True, (x + index), y)
+        index += 1
     return (False, -1, -1)
