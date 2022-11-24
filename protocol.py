@@ -23,11 +23,12 @@ class Protocol:
 
     # Read input and stock it in self.input
     
-    def readInput(self):
-        try:
+    def readInput(self, args, file):
+        if len(args) == 2:
+            self.input = file.readline()
+            myPrint(self.input, "")
+        elif len(args) == 1:
             self.input = input()
-        except:
-            exit(0)
 
     # Print output which is in self.output
     
@@ -87,8 +88,8 @@ class Protocol:
 
     # BOARD [X][Y][FIELD] : Where X and Y are position and FIELD is the player, the function have to return the position X,Y of the player's move
 
-    def board(self):
-        self.readInput()
+    def board(self, args, file):
+        self.readInput(args, file)
         try:
             self.arg = self.input.split()
             nbArg = len(self.arg)
@@ -114,9 +115,9 @@ class Protocol:
                 pos_y = int(value[1])
                 player = int(value[2])
                 self.gameBoard.doMove(pos_x, pos_y, player)
-                self.board()
+                self.board(args, file)
         except ValueError:
-            self.readInput()
+            self.readInput(args, file)
     
     # INFO [KEY][VALUE] : The player don't need to answer this
 
@@ -134,7 +135,7 @@ class Protocol:
     def about(self):
         self.output = "name=\"BBGOBB\", version=\"1.0\"\n"
 
-    def computeInput(self):
+    def computeInput(self, args, file):
         self.arg = self.input.split()
         nbArg = len(self.arg)
         if (self.arg[0] == "START" and nbArg == 2):
@@ -147,7 +148,7 @@ class Protocol:
             self.begin()
             self.printOutput()
         elif (self.arg[0] == "BOARD"):
-            self.board()
+            self.board(args, file)
             self.printOutput()
         elif (self.arg[0] == "INFO" and nbArg == 3):
             self.info(self.arg[1], self.arg[2])
