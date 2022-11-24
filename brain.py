@@ -4,34 +4,6 @@ import random
 from patterns import *
 from board import *
 
-def check_patterns(board, patternsType) -> int:
-    count = 0
-    for pattern in patternsType:
-        for x in range(board.getSizeBoard()):
-            for y in range(board.getSizeBoard()):
-                if (match_right(board, pattern, x, y) == True):
-                    count += 1
-                if (match_left(board, pattern, x, y) == True):
-                    count += 1
-                if (match_diag_right(board, pattern, x, y) == True):
-                    count += 1
-                if (match_diag_left(board, pattern, x, y) == True):
-                    count += 1
-                if (match_down(board, pattern, x, y) == True):
-                    count += 1
-    return (count)
-
-
-def evaluate_board(board, patternType) -> int:
-    score = 0
-    score += check_patterns(board, patternsAllyFour) * 16
-    myPrint("1", "")
-    score += check_patterns(board, patternsAllyThree) * 8
-    myPrint("2", "")
-    score += check_patterns(board, patternsAllyTwo) * 4
-    myPrint("3", "")
-
-
 def howManyPawnRightDiagonal(board, x, y) -> int:
     nb = 1
     player = board[x][y]

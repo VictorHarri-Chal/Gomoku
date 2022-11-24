@@ -135,6 +135,25 @@ class Protocol:
     def about(self):
         self.output = "name=\"BBGOBB\", version=\"1.0\"\n"
 
+    def score(self, player):
+        score = 0
+        if (player == 1):
+            score += check_patterns(self.gameBoard, patternsAllyFour) * 16
+            score += check_patterns(self.gameBoard, patternsAllyThree) * 8
+            score += check_patterns(self.gameBoard, patternsAllyTwo) * 4
+            score -= check_patterns(self.gameBoard, patternsEnemyFour) * 16
+            score -= check_patterns(self.gameBoard, patternsEnemyThree) * 8
+            score -= check_patterns(self.gameBoard, patternsEnemyTwo) * 4
+        if (player == 2):
+            score += check_patterns(self.gameBoard, patternsEnemyFour) * 16
+            score += check_patterns(self.gameBoard, patternsEnemyThree) * 8
+            score += check_patterns(self.gameBoard, patternsEnemyTwo) * 4
+            score -= check_patterns(self.gameBoard, patternsAllyFour) * 16
+            score -= check_patterns(self.gameBoard, patternsAllyThree) * 8
+            score -= check_patterns(self.gameBoard, patternsAllyTwo) * 4
+        print("le score: ")
+        print(score)
+
     def computeInput(self, args, file):
         self.arg = self.input.split()
         nbArg = len(self.arg)
@@ -159,3 +178,6 @@ class Protocol:
             self.printOutput()
         elif (self.arg[0] == "DISPLAY"):
             self.gameBoard.displayBoard()
+        elif (self.arg[0] == "SCORE"):
+            self.score(1)
+            self.printOutput()
