@@ -20,6 +20,7 @@ class Protocol:
         self.output = ""
         self.boardSize = 0
         self.gameBoard = MyBoard()
+        self.isStart = True
 
     # Read input and stock it in self.input
     
@@ -54,7 +55,7 @@ class Protocol:
     def turn(self, arg1) -> str:
         try:
             # t = Timer()
-            # t.start()
+            # t.start()if (self.isStart == True):
             value = arg1.split(',')
             value1 = int(value[0])
             value2 = int(value[1])
@@ -70,7 +71,20 @@ class Protocol:
                 move = str(res_match_enemy[1] + "," + str(res_match_enemy[2]))
                 self.output = move + "\n"
             else:
-                pos = randPos(self.gameBoard, self.boardSize)
+                if (self.isStart == True):
+                    pos = self.boardSize / 2
+                    pos = pos.__round__()
+                    if (self.gameBoard.board[pos][pos] == 0):
+                        self.gameBoard.doMove(pos, pos, 1)
+                        self.output = str(pos) + ","  + str(pos) + "\n"
+                        self.isStart = False
+                    else:
+                        self.gameBoard.doMove(int(pos), int(pos), 1)
+                        self.output = str(pos) + ","  + str(pos) + "\n"
+                        self.isStart = False
+                    return
+                pos = find_move(self.gameBoard, self.boardSize)
+                # pos = randPos(self.gameBoard, self.boardSize)
                 move = str(pos[0]) + "," + str(pos[1]) + "\n"
                 self.gameBoard.doMove(pos[0], pos[1], 1)
                 self.output = move
@@ -81,10 +95,11 @@ class Protocol:
     # BEGIN : The player have to play first, the function return the position X,Y of the player's move
 
     def begin(self):
-        pos = randPos(self.gameBoard, self.boardSize)
-        move = str(pos[0]) + "," + str(pos[1]) + "\n"
-        self.gameBoard.doMove(pos[0], pos[1], 1)
-        self.output = move
+        pos = self.boardSize / 2
+        pos = pos.__round__()
+        self.gameBoard.doMove(pos, pos, 1)
+        self.output = str(pos) + ","  + str(pos) + "\n"
+        self.isStart = False
 
     # BOARD [X][Y][FIELD] : Where X and Y are position and FIELD is the player, the function have to return the position X,Y of the player's move
 
@@ -105,6 +120,18 @@ class Protocol:
                     move = str(res_match_enemy[1]) + "," + str(res_match_enemy[2])
                     self.output = move + "\n"
                 else:
+                    if (self.isStart == True):
+                        pos = self.boardSize / 2
+                        pos = pos.__round__()
+                        if (self.gameBoard.board[pos][pos] == 0):
+                            self.gameBoard.doMove(pos, pos, 1)
+                            self.output = str(pos) + ","  + str(pos) + "\n"
+                            self.isStart = False
+                        else:
+                            self.gameBoard.doMove(int(pos), int(pos), 1)
+                            self.output = str(pos) + ","  + str(pos) + "\n"
+                            self.isStart = False
+                        return
                     pos = find_move(self.gameBoard, self.boardSize)
                     # pos = randPos(self.gameBoard, self.boardSize)
                     move = str(pos[0]) + "," + str(pos[1]) + "\n"
@@ -152,8 +179,7 @@ class Protocol:
             score -= check_patterns(self.gameBoard, patternsAllyFour) * 16
             score -= check_patterns(self.gameBoard, patternsAllyThree) * 8
             score -= check_patterns(self.gameBoard, patternsAllyTwo) * 4
-        print("le score: ")
-        print(score)
+        return (score)
 
     def computeInput(self, args, file):
         self.arg = self.input.split()

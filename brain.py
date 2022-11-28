@@ -93,7 +93,25 @@ def is_pawn_around(board, boardSize, x, y, player):
     if ((x - 1) >= 0 and (y - 1) >= 0):
         if (board.board[x - 1][y - 1] == player):  # HAUT GAUCHE
             return (True)
-            
+
+def evaluation(board, player):
+    score = 0
+    if (player == 1):
+        score += check_patterns(board, patternsAllyFour) * 16
+        score += check_patterns(board, patternsAllyThree) * 8
+        score += check_patterns(board, patternsAllyTwo) * 4
+        score -= check_patterns(board, patternsEnemyFour) * 16
+        score -= check_patterns(board, patternsEnemyThree) * 8
+        score -= check_patterns(board, patternsEnemyTwo) * 4
+    if (player == 2):
+        score += check_patterns(board, patternsEnemyFour) * 16
+        score += check_patterns(board, patternsEnemyThree) * 8
+        score += check_patterns(board, patternsEnemyTwo) * 4
+        score -= check_patterns(board, patternsAllyFour) * 16
+        score -= check_patterns(board, patternsAllyThree) * 8
+        score -= check_patterns(board, patternsAllyTwo) * 4
+    return (score)
+    
 def find_move(board, boardSize):
     x = 0
     y = 0
@@ -101,7 +119,12 @@ def find_move(board, boardSize):
     temp = 0
     for cnt in range(boardSize):
         for count in range(boardSize):
-            if (is_pawn_around == True):
+            if (is_pawn_around(board, boardSize, cnt, count, 1) == True):
                 board.doMove(cnt, count, 1)
-                temp = 
+                temp = evaluation(board, 1)
+                if (temp > value):
+                    x = cnt
+                    y = count
+                    value = temp
+                board.removeMove(cnt, count)
     return (x, y)
