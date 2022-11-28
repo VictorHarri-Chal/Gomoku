@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-from paterns import *
+from patterns import *
 from board import *
 from brain import *
 from timer import *
@@ -59,8 +59,8 @@ class Protocol:
             value1 = int(value[0])
             value2 = int(value[1])
             self.gameBoard.doMove(value1, value2, 2)
-            res_match = is_matching_pattern(self.gameBoard, paternsAlly1)
-            res_match_enemy = is_matching_pattern(self.gameBoard, paternsEnemy1)
+            res_match = is_matching_pattern(self.gameBoard, patternsAllyFour)
+            res_match_enemy = is_matching_pattern(self.gameBoard, patternsEnemyFour)
             if (res_match[0] == True):
                 self.gameBoard.doMove(res_match[1], res_match[2], 1)
                 move = str(res_match[1] + "," + str(res_match[2]))
@@ -94,8 +94,8 @@ class Protocol:
             self.arg = self.input.split()
             nbArg = len(self.arg)
             if (nbArg == 1 and self.arg[0] == "DONE"):
-                res_match = is_matching_pattern(self.gameBoard, paternsAlly1)
-                res_match_enemy = is_matching_pattern(self.gameBoard, paternsEnemy1)
+                res_match = is_matching_pattern(self.gameBoard, patternsAllyFour)
+                res_match_enemy = is_matching_pattern(self.gameBoard, patternsEnemyFour)
                 if (res_match[0] == True):
                     self.gameBoard.doMove(int(res_match[1]), int(res_match[2]), 1)
                     move = str(res_match[1]) + "," + str(res_match[2])
@@ -136,6 +136,25 @@ class Protocol:
     def about(self):
         self.output = "name=\"BBGOBB\", version=\"1.0\"\n"
 
+    def score(self, player):
+        score = 0
+        if (player == 1):
+            score += check_patterns(self.gameBoard, patternsAllyFour) * 16
+            score += check_patterns(self.gameBoard, patternsAllyThree) * 8
+            score += check_patterns(self.gameBoard, patternsAllyTwo) * 4
+            score -= check_patterns(self.gameBoard, patternsEnemyFour) * 16
+            score -= check_patterns(self.gameBoard, patternsEnemyThree) * 8
+            score -= check_patterns(self.gameBoard, patternsEnemyTwo) * 4
+        if (player == 2):
+            score += check_patterns(self.gameBoard, patternsEnemyFour) * 16
+            score += check_patterns(self.gameBoard, patternsEnemyThree) * 8
+            score += check_patterns(self.gameBoard, patternsEnemyTwo) * 4
+            score -= check_patterns(self.gameBoard, patternsAllyFour) * 16
+            score -= check_patterns(self.gameBoard, patternsAllyThree) * 8
+            score -= check_patterns(self.gameBoard, patternsAllyTwo) * 4
+        print("le score: ")
+        print(score)
+
     def computeInput(self, args, file):
         self.arg = self.input.split()
         nbArg = len(self.arg)
@@ -160,3 +179,6 @@ class Protocol:
             self.printOutput()
         elif (self.arg[0] == "DISPLAY"):
             self.gameBoard.displayBoard()
+        elif (self.arg[0] == "SCORE"):
+            self.score(1)
+            self.printOutput()

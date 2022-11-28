@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 
 import random
-from paterns import *
+from patterns import *
+from board import *
 
 def howManyPawnRightDiagonal(board, x, y) -> int:
     nb = 1
