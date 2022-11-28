@@ -105,7 +105,8 @@ class Protocol:
                     move = str(res_match_enemy[1]) + "," + str(res_match_enemy[2])
                     self.output = move + "\n"
                 else:
-                    pos = randPos(self.gameBoard, self.boardSize)
+                    pos = find_move(self.gameBoard, self.boardSize)
+                    # pos = randPos(self.gameBoard, self.boardSize)
                     move = str(pos[0]) + "," + str(pos[1]) + "\n"
                     self.gameBoard.doMove(pos[0], pos[1], 1)
                     self.output = move

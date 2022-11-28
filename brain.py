@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import random
+from paterns import *
 
 def howManyPawnRightDiagonal(board, x, y) -> int:
     nb = 1
@@ -71,14 +72,35 @@ def randPos(board, boardSize) -> tuple:
         x = random.randint(0, boardSize)
         y = random.randint(0, boardSize)
     return (x, y)
-    
-def isWinnable(board, player) -> str:
-    for cnt in range(len(board)):
-        for count in range(len(board[cnt])):
-            if (board[cnt][count] == player):
-                return
-    return (str(-1) + ',' + str(-1))
 
-def isLosable(board, player) -> str:
-    
-    return (str(-1) + ',' + str(-1))
+def is_pawn_around(board, boardSize, x, y, player):
+    if ((x + 1) < boardSize):
+        if (board.board[x + 1][y] == player):  # DROITE
+            return (True)
+    if ((x - 1) >= 0):
+        if (board.board[x - 1][y] == player):  # GAUCHE
+            return (True)
+    if ((x + 1) < boardSize and (y + 1) < boardSize): # BAS DROITE
+        if (board.board[x + 1][y + 1] == player):
+            return (True)
+    if ((x + 1) < boardSize and (y - 1) >= 0):
+        if (board.board[x + 1][y - 1] == player): # HAUT DROITE
+            return (True)
+    if ((x - 1) > 0 and (y + 1) < boardSize):
+        if (board.board[x - 1][y + 1] == player): # BAS GAUCHE
+            return (True)
+    if ((x - 1) >= 0 and (y - 1) >= 0):
+        if (board.board[x - 1][y - 1] == player):  # HAUT GAUCHE
+            return (True)
+            
+def find_move(board, boardSize):
+    x = 0
+    y = 0
+    value = 0
+    temp = 0
+    for cnt in range(boardSize):
+        for count in range(boardSize):
+            if (is_pawn_around == True):
+                board.doMove(cnt, count, 1)
+                temp = 
+    return (x, y)
