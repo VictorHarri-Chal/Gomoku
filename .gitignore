@@ -7,5 +7,5 @@ unit_tests.py
 pbrain-gomoku-ai
 dist/
 build/
-pbrain.exe
-pbrain.spec
+pbrain-gomoku-ai.exe
+pbrain-gomoku-ai.spec
