@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
 import random
-from patterns import *
 from board import *
+from patterns import *
 
 def howManyPawnRightDiagonal(board, x, y) -> int:
     nb = 1
@@ -74,7 +74,7 @@ def randPos(board, boardSize) -> tuple:
         y = random.randint(0, boardSize)
     return (x, y)
 
-def is_pawn_around(board, boardSize, x, y, player):
+def is_pawn_around(board, boardSize, x, y, player) -> bool:
     if ((x + 1) < boardSize):
         if (board.board[x + 1][y] == player):  # DROITE
             return (True)
@@ -93,38 +93,3 @@ def is_pawn_around(board, boardSize, x, y, player):
     if ((x - 1) >= 0 and (y - 1) >= 0):
         if (board.board[x - 1][y - 1] == player):  # HAUT GAUCHE
             return (True)
-
-def evaluation(board, player):
-    score = 0
-    if (player == 1):
-        score += check_patterns(board, patternsAllyFour) * 16
-        score += check_patterns(board, patternsAllyThree) * 8
-        score += check_patterns(board, patternsAllyTwo) * 4
-        score -= check_patterns(board, patternsEnemyFour) * 16
-        score -= check_patterns(board, patternsEnemyThree) * 8
-        score -= check_patterns(board, patternsEnemyTwo) * 4
-    if (player == 2):
-        score += check_patterns(board, patternsEnemyFour) * 16
-        score += check_patterns(board, patternsEnemyThree) * 8
-        score += check_patterns(board, patternsEnemyTwo) * 4
-        score -= check_patterns(board, patternsAllyFour) * 16
-        score -= check_patterns(board, patternsAllyThree) * 8
-        score -= check_patterns(board, patternsAllyTwo) * 4
-    return (score)
-    
-def find_move(board, boardSize):
-    x = 0
-    y = 0
-    value = 0
-    temp = 0
-    for cnt in range(boardSize):
-        for count in range(boardSize):
-            if (is_pawn_around(board, boardSize, cnt, count, 1) == True):
-                board.doMove(cnt, count, 1)
-                temp = evaluation(board, 1)
-                if (temp > value):
-                    x = cnt
-                    y = count
-                    value = temp
-                board.removeMove(cnt, count)
-    return (x, y)

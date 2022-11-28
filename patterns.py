@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 from board import *
+from brain import *
 from enum import Enum
 
 # PATTERNS 1 : NAIVE PHASE
@@ -86,8 +87,8 @@ def match_down(board, pattern, x, y):
             return (False)
     return (True)
 
-def is_matching_pattern(board, patternsType):
-    index = 0
+def is_matching_pattern(board, patternsType, power):
+    index = power
     for pattern in patternsType:
         for x in range(board.getSizeBoard()):
             for y in range(board.getSizeBoard()):
@@ -120,3 +121,39 @@ def check_patterns(board, patternsType) -> int:
                 if (match_down(board, pattern, x, y) == True):
                     count += 1
     return (count)
+
+def evaluation(board, player) -> int:
+    score = 0
+    if (player == 1):
+        score += check_patterns(board, patternsAllyFour) * 16
+        score += check_patterns(board, patternsAllyThree) * 8
+        score += check_patterns(board, patternsAllyTwo) * 4
+        score -= check_patterns(board, patternsEnemyFour) * 16
+        score -= check_patterns(board, patternsEnemyThree) * 8
+        score -= check_patterns(board, patternsEnemyTwo) * 4
+    if (player == 2):
+        score += check_patterns(board, patternsEnemyFour) * 16
+        score += check_patterns(board, patternsEnemyThree) * 8
+        score += check_patterns(board, patternsEnemyTwo) * 4
+        score -= check_patterns(board, patternsAllyFour) * 16
+        score -= check_patterns(board, patternsAllyThree) * 8
+        score -= check_patterns(board, patternsAllyTwo) * 4
+    return (score)
+
+def find_move(board, boardSize) -> tuple:
+    x = 0
+    y = 0
+    value = 0
+    temp = 0
+    for cnt in range(boardSize):
+        for count in range(boardSize):
+            if (board.isCaseUsable(cnt, count) == True and is_pawn_around(board, boardSize, cnt, count, 1) == True):
+                board.doMove(cnt, count, 1)
+                temp = evaluation(board, 1)
+                if (temp > value):
+                    x = cnt
+                    y = count
+                    value = temp
+                    print("Value = {}" .format(value), flush=True)
+                board.removeMove(cnt, count)
+    return (x, y)
