@@ -66,19 +66,19 @@ class Protocol:
             res_match_enemy3 = is_matching_pattern(self.gameBoard, patternsEnemyThree, 1)
             if (res_match[0] == True):
                 self.gameBoard.doMove(res_match[1], res_match[2], 1)
-                move = str(res_match[1] + "," + str(res_match[2]))
+                move = str(res_match[1]) + "," + str(res_match[2])
                 self.output = move + "\n"
             elif (res_match_enemy[0] == True):
                 self.gameBoard.doMove(res_match_enemy[1], res_match_enemy[2], 1)
-                move = str(res_match_enemy[1] + "," + str(res_match_enemy[2]))
+                move = str(res_match_enemy[1]) + "," + str(res_match_enemy[2])
                 self.output = move + "\n"
             elif (res_match3[0] == True):
                 self.gameBoard.doMove(res_match3[1], res_match3[2], 1)
-                move = str(res_match3[1] + "," + str(res_match3[2]))
+                move = str(res_match3[1]) + "," + str(res_match3[2])
                 self.output = move + "\n"
             elif (res_match_enemy3[0] == True):
                 self.gameBoard.doMove(res_match_enemy3[1], res_match_enemy3[2], 1)
-                move = str(res_match_enemy3[1] + "," + str(res_match_enemy3[2]))
+                move = str(res_match_enemy3[1]) + "," + str(res_match_enemy3[2])
                 self.output = move + "\n"
             else:
                 if (self.isStart == True):
@@ -97,8 +97,8 @@ class Protocol:
                 # pos = randPos(self.gameBoard, self.boardSize)
                 move = str(pos[0]) + "," + str(pos[1]) + "\n"
                 self.gameBoard.doMove(pos[0], pos[1], 1)
-                self.gameBoard.displayBoard()
                 self.output = move
+            # self.gameBoard.displayBoard()
             # t.stop()
         except ValueError:
             return ("ERROR turn command\n")
@@ -120,8 +120,8 @@ class Protocol:
             self.arg = self.input.split()
             nbArg = len(self.arg)
             if (nbArg == 1 and self.arg[0] == "DONE"):
-                res_match = is_matching_pattern(self.gameBoard, patternsAllyFour)
-                res_match_enemy = is_matching_pattern(self.gameBoard, patternsEnemyFour)
+                res_match = is_matching_pattern(self.gameBoard, patternsAllyFour, 0)
+                res_match_enemy = is_matching_pattern(self.gameBoard, patternsEnemyFour, 0)
                 res_match3 = is_matching_pattern(self.gameBoard, patternsAllyThree, 1)
                 res_match_enemy3 = is_matching_pattern(self.gameBoard, patternsEnemyThree, 1)
                 if (res_match[0] == True):
@@ -134,11 +134,11 @@ class Protocol:
                     self.output = move + "\n"
                 elif (res_match3[0] == True):
                     self.gameBoard.doMove(res_match3[1], res_match3[2], 1)
-                    move = str(res_match3[1] + "," + str(res_match3[2]))
+                    move = str(res_match3[1]) + "," + str(res_match3[2])
                     self.output = move + "\n"
                 elif (res_match_enemy3[0] == True):
                     self.gameBoard.doMove(res_match_enemy3[1], res_match_enemy3[2], 1)
-                    move = str(res_match_enemy3[1] + "," + str(res_match_enemy3[2]))
+                    move = str(res_match_enemy3[1]) + "," + str(res_match_enemy3[2])
                     self.output = move + "\n"
                 else:
                     if (self.isStart == True):

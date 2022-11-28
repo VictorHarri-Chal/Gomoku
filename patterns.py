@@ -154,6 +154,6 @@ def find_move(board, boardSize) -> tuple:
                     x = cnt
                     y = count
                     value = temp
-                    print("Value = {}" .format(value), flush=True)
+                    # print("Value = {}" .format(value), flush=True)
                 board.removeMove(cnt, count)
     return (x, y)
