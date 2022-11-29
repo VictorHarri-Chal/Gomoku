@@ -141,8 +141,8 @@ def evaluation(board, player) -> int:
     return (score)
 
 def find_move(board, boardSize) -> tuple:
-    x = 0
-    y = 0
+    x = -1
+    y = -1
     value = 0
     temp = 0
     for cnt in range(boardSize):
