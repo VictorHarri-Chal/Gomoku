@@ -26,9 +26,10 @@ class Protocol:
     def readInput(self, args, file):
         if len(args) == 2:
             self.input = file.readline()
-            myPrint(self.input, "")
+            print("DEBUG " + self.input)
         elif len(args) == 1:
             self.input = input()
+            print("DEBUG " + self.input)
 
     # Print output which is in self.output
     
@@ -84,6 +85,7 @@ class Protocol:
         pos = randPos(self.gameBoard, self.boardSize)
         move = str(pos[0]) + "," + str(pos[1]) + "\n"
         self.gameBoard.doMove(pos[0], pos[1], 1)
+        print("DEBUG là on begin")
         self.output = move
 
     # BOARD [X][Y][FIELD] : Where X and Y are position and FIELD is the player, the function have to return the position X,Y of the player's move
@@ -137,20 +139,14 @@ class Protocol:
 
     def score(self, player):
         score = 0
-        if (player == 1):
-            score += check_patterns(self.gameBoard, patternsAllyFour) * 16
-            score += check_patterns(self.gameBoard, patternsAllyThree) * 8
-            score += check_patterns(self.gameBoard, patternsAllyTwo) * 4
-            score -= check_patterns(self.gameBoard, patternsEnemyFour) * 16
-            score -= check_patterns(self.gameBoard, patternsEnemyThree) * 8
-            score -= check_patterns(self.gameBoard, patternsEnemyTwo) * 4
+        score += check_patterns(self.gameBoard, patternsAllyFour) * 16
+        score += check_patterns(self.gameBoard, patternsAllyThree) * 8
+        score += check_patterns(self.gameBoard, patternsAllyTwo) * 4
+        score -= check_patterns(self.gameBoard, patternsEnemyFour) * 16
+        score -= check_patterns(self.gameBoard, patternsEnemyThree) * 8
+        score -= check_patterns(self.gameBoard, patternsEnemyTwo) * 4
         if (player == 2):
-            score += check_patterns(self.gameBoard, patternsEnemyFour) * 16
-            score += check_patterns(self.gameBoard, patternsEnemyThree) * 8
-            score += check_patterns(self.gameBoard, patternsEnemyTwo) * 4
-            score -= check_patterns(self.gameBoard, patternsAllyFour) * 16
-            score -= check_patterns(self.gameBoard, patternsAllyThree) * 8
-            score -= check_patterns(self.gameBoard, patternsAllyTwo) * 4
+            score -= score * 2
         print("le score: ")
         print(score)
 
@@ -179,5 +175,5 @@ class Protocol:
         elif (self.arg[0] == "DISPLAY"):
             self.gameBoard.displayBoard()
         elif (self.arg[0] == "SCORE"):
-            self.score(1)
+            self.score(2)
             self.printOutput()
