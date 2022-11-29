@@ -60,42 +60,7 @@ class Protocol:
             value1 = int(value[0])
             value2 = int(value[1])
             self.gameBoard.doMove(value1, value2, 2)
-            res_match = is_matching_pattern(self.gameBoard, patternsAllyFour, 0)
-            res_match_enemy = is_matching_pattern(self.gameBoard, patternsEnemyFour, 0)
-            res_match3 = is_matching_pattern(self.gameBoard, patternsAllyThree, 1)
-            res_match_enemy3 = is_matching_pattern(self.gameBoard, patternsEnemyThree, 1)
-            if (res_match[0] == True):
-                self.gameBoard.doMove(res_match[1], res_match[2], 1)
-                move = str(res_match[1]) + "," + str(res_match[2])
-                self.output = move + "\n"
-            elif (res_match_enemy[0] == True):
-                self.gameBoard.doMove(res_match_enemy[1], res_match_enemy[2], 1)
-                move = str(res_match_enemy[1]) + "," + str(res_match_enemy[2])
-                self.output = move + "\n"
-            elif (res_match3[0] == True):
-                self.gameBoard.doMove(res_match3[1], res_match3[2], 1)
-                move = str(res_match3[1]) + "," + str(res_match3[2])
-                self.output = move + "\n"
-            elif (res_match_enemy3[0] == True):
-                self.gameBoard.doMove(res_match_enemy3[1], res_match_enemy3[2], 1)
-                move = str(res_match_enemy3[1]) + "," + str(res_match_enemy3[2])
-                self.output = move + "\n"
-            else:
-                if (self.isStart == True):
-                    pos = (self.boardSize - 1) / 2
-                    pos = pos.__round__()
-                    if (self.gameBoard.board[pos][pos] == 0):
-                        self.gameBoard.doMove(pos, pos, 1)
-                        self.output = str(pos) + ","  + str(pos) + "\n"
-                        self.isStart = False
-                        return
-                pos = find_move(self.gameBoard, self.boardSize)
-                if (pos[0] == -1 and pos[1] == -1):
-                    pos = randPos(self.gameBoard, self.boardSize)
-                move = str(pos[0]) + "," + str(pos[1]) + "\n"
-                self.gameBoard.doMove(pos[0], pos[1], 1)
-                self.output = move
-            # self.gameBoard.displayBoard()
+            self.move_manager()
             # t.stop()
         except ValueError:
             return ("ERROR turn command\n")
@@ -117,41 +82,7 @@ class Protocol:
             self.arg = self.input.split()
             nbArg = len(self.arg)
             if (nbArg == 1 and self.arg[0] == "DONE"):
-                res_match = is_matching_pattern(self.gameBoard, patternsAllyFour, 0)
-                res_match_enemy = is_matching_pattern(self.gameBoard, patternsEnemyFour, 0)
-                res_match3 = is_matching_pattern(self.gameBoard, patternsAllyThree, 1)
-                res_match_enemy3 = is_matching_pattern(self.gameBoard, patternsEnemyThree, 1)
-                if (res_match[0] == True):
-                    self.gameBoard.doMove(res_match[1], res_match[2], 1)
-                    move = str(res_match[1]) + "," + str(res_match[2])
-                    self.output = move + "\n"
-                elif (res_match_enemy[0] == True):
-                    self.gameBoard.doMove(res_match_enemy[1], res_match_enemy[2], 1)
-                    move = str(res_match_enemy[1]) + "," + str(res_match_enemy[2])
-                    self.output = move + "\n"
-                elif (res_match3[0] == True):
-                    self.gameBoard.doMove(res_match3[1], res_match3[2], 1)
-                    move = str(res_match3[1]) + "," + str(res_match3[2])
-                    self.output = move + "\n"
-                elif (res_match_enemy3[0] == True):
-                    self.gameBoard.doMove(res_match_enemy3[1], res_match_enemy3[2], 1)
-                    move = str(res_match_enemy3[1]) + "," + str(res_match_enemy3[2])
-                    self.output = move + "\n"
-                else:
-                    if (self.isStart == True):
-                        pos = (self.boardSize - 1) / 2
-                        pos = pos.__round__()
-                        if (self.gameBoard.board[pos][pos] == 0):
-                            self.gameBoard.doMove(pos, pos, 1)
-                            self.output = str(pos) + ","  + str(pos) + "\n"
-                            self.isStart = False
-                            return
-                    pos = find_move(self.gameBoard, self.boardSize)
-                    if (pos[0] == -1 and pos[1] == -1):
-                        pos = randPos(self.gameBoard, self.boardSize)
-                    move = str(pos[0]) + "," + str(pos[1]) + "\n"
-                    self.gameBoard.doMove(pos[0], pos[1], 1)
-                    self.output = move
+                self.move_manager()
             elif (nbArg == 1):
                 value = self.arg[0].split(',')
                 pos_x = int(value[0])
@@ -223,3 +154,41 @@ class Protocol:
         elif (self.arg[0] == "SCORE"):
             self.score(1)
             self.printOutput()
+
+    def move_manager(self):
+        pos = self.is_mandatory_move()
+        if (pos[0] == -1 and pos[1] == -1):
+            if (self.isStart == True):
+                pos = self.play_first_move()
+            else:
+                pos = find_move(self.gameBoard, self.boardSize)
+        self.gameBoard.doMove(pos[0], pos[1], 1)
+        self.output = str(pos[0]) + "," + str(pos[1]) + "\n"
+        
+    def is_mandatory_move(self):
+        res_match = is_matching_pattern(self.gameBoard, patternsAllyFour, 0)
+        res_match_enemy = is_matching_pattern(self.gameBoard, patternsEnemyFour, 0)
+        res_match3 = is_matching_pattern(self.gameBoard, patternsAllyThree, 1)
+        res_match_enemy3 = is_matching_pattern(self.gameBoard, patternsEnemyThree, 1)
+        if (res_match[0] == True):
+            return (res_match[1], res_match[2])
+        elif (res_match_enemy[0] == True):
+            return (res_match_enemy[1], res_match_enemy[2])
+        elif (res_match3[0] == True):
+            return (res_match3[1], res_match3[2])
+        elif (res_match_enemy3[0] == True):
+            return (res_match_enemy3[1], res_match_enemy3[2])
+        return (-1, -1)
+    
+    def play_first_move(self):
+        pos = (self.boardSize - 1) / 2
+        pos = pos.__round__()
+        if (self.gameBoard.board[pos][pos] == 0):
+            self.gameBoard.doMove(pos, pos, 1)
+            self.output = str(pos) + ","  + str(pos) + "\n"
+            self.isStart = False
+            return (pos, pos)
+        pos = find_move(self.gameBoard, self.boardSize)
+        if (pos[0] == -1 and pos[1] == -1):
+            pos = randPos(self.gameBoard, self.boardSize)
+        return (pos[0], pos[1])
