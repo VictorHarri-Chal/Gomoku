@@ -20,6 +20,7 @@ class Protocol:
         self.output = ""
         self.boardSize = 0
         self.gameBoard = MyBoard()
+        self.isStart = True
 
     # Read input and stock it in self.input
     
@@ -55,26 +56,50 @@ class Protocol:
     def turn(self, arg1) -> str:
         try:
             # t = Timer()
-            # t.start()
+            # t.start()if (self.isStart == True):
             value = arg1.split(',')
             value1 = int(value[0])
             value2 = int(value[1])
             self.gameBoard.doMove(value1, value2, 2)
-            res_match = is_matching_pattern(self.gameBoard, patternsAllyFour)
-            res_match_enemy = is_matching_pattern(self.gameBoard, patternsEnemyFour)
+            res_match = is_matching_pattern(self.gameBoard, patternsAllyFour, 0)
+            res_match_enemy = is_matching_pattern(self.gameBoard, patternsEnemyFour, 0)
+            res_match3 = is_matching_pattern(self.gameBoard, patternsAllyThree, 1)
+            res_match_enemy3 = is_matching_pattern(self.gameBoard, patternsEnemyThree, 1)
             if (res_match[0] == True):
                 self.gameBoard.doMove(res_match[1], res_match[2], 1)
-                move = str(res_match[1] + "," + str(res_match[2]))
+                move = str(res_match[1]) + "," + str(res_match[2])
                 self.output = move + "\n"
             elif (res_match_enemy[0] == True):
                 self.gameBoard.doMove(res_match_enemy[1], res_match_enemy[2], 1)
-                move = str(res_match_enemy[1] + "," + str(res_match_enemy[2]))
+                move = str(res_match_enemy[1]) + "," + str(res_match_enemy[2])
+                self.output = move + "\n"
+            elif (res_match3[0] == True):
+                self.gameBoard.doMove(res_match3[1], res_match3[2], 1)
+                move = str(res_match3[1]) + "," + str(res_match3[2])
+                self.output = move + "\n"
+            elif (res_match_enemy3[0] == True):
+                self.gameBoard.doMove(res_match_enemy3[1], res_match_enemy3[2], 1)
+                move = str(res_match_enemy3[1]) + "," + str(res_match_enemy3[2])
                 self.output = move + "\n"
             else:
-                pos = randPos(self.gameBoard, self.boardSize)
+                if (self.isStart == True):
+                    pos = (self.boardSize - 1) / 2
+                    pos = pos.__round__()
+                    if (self.gameBoard.board[pos][pos] == 0):
+                        self.gameBoard.doMove(pos, pos, 1)
+                        self.output = str(pos) + ","  + str(pos) + "\n"
+                        self.isStart = False
+                    else:
+                        self.gameBoard.doMove(int(pos), int(pos), 1)
+                        self.output = str(pos) + ","  + str(pos) + "\n"
+                        self.isStart = False
+                    return
+                pos = find_move(self.gameBoard, self.boardSize)
+                # pos = randPos(self.gameBoard, self.boardSize)
                 move = str(pos[0]) + "," + str(pos[1]) + "\n"
                 self.gameBoard.doMove(pos[0], pos[1], 1)
                 self.output = move
+            # self.gameBoard.displayBoard()
             # t.stop()
         except ValueError:
             return ("ERROR turn command\n")
@@ -82,11 +107,11 @@ class Protocol:
     # BEGIN : The player have to play first, the function return the position X,Y of the player's move
 
     def begin(self):
-        pos = randPos(self.gameBoard, self.boardSize)
-        move = str(pos[0]) + "," + str(pos[1]) + "\n"
-        self.gameBoard.doMove(pos[0], pos[1], 1)
-        print("DEBUG là on begin")
-        self.output = move
+        pos = (self.boardSize - 1) / 2
+        pos = pos.__round__()
+        self.gameBoard.doMove(pos, pos, 1)
+        self.output = str(pos) + ","  + str(pos) + "\n"
+        self.isStart = False
 
     # BOARD [X][Y][FIELD] : Where X and Y are position and FIELD is the player, the function have to return the position X,Y of the player's move
 
@@ -96,8 +121,10 @@ class Protocol:
             self.arg = self.input.split()
             nbArg = len(self.arg)
             if (nbArg == 1 and self.arg[0] == "DONE"):
-                res_match = is_matching_pattern(self.gameBoard, patternsAllyFour)
-                res_match_enemy = is_matching_pattern(self.gameBoard, patternsEnemyFour)
+                res_match = is_matching_pattern(self.gameBoard, patternsAllyFour, 0)
+                res_match_enemy = is_matching_pattern(self.gameBoard, patternsEnemyFour, 0)
+                res_match3 = is_matching_pattern(self.gameBoard, patternsAllyThree, 1)
+                res_match_enemy3 = is_matching_pattern(self.gameBoard, patternsEnemyThree, 1)
                 if (res_match[0] == True):
                     self.gameBoard.doMove(int(res_match[1]), int(res_match[2]), 1)
                     move = str(res_match[1]) + "," + str(res_match[2])
@@ -106,8 +133,29 @@ class Protocol:
                     self.gameBoard.doMove(int(res_match_enemy[1]), int(res_match_enemy[2]), 1)
                     move = str(res_match_enemy[1]) + "," + str(res_match_enemy[2])
                     self.output = move + "\n"
+                elif (res_match3[0] == True):
+                    self.gameBoard.doMove(res_match3[1], res_match3[2], 1)
+                    move = str(res_match3[1]) + "," + str(res_match3[2])
+                    self.output = move + "\n"
+                elif (res_match_enemy3[0] == True):
+                    self.gameBoard.doMove(res_match_enemy3[1], res_match_enemy3[2], 1)
+                    move = str(res_match_enemy3[1]) + "," + str(res_match_enemy3[2])
+                    self.output = move + "\n"
                 else:
-                    pos = randPos(self.gameBoard, self.boardSize)
+                    if (self.isStart == True):
+                        pos = (self.boardSize - 1) / 2
+                        pos = pos.__round__()
+                        if (self.gameBoard.board[pos][pos] == 0):
+                            self.gameBoard.doMove(pos, pos, 1)
+                            self.output = str(pos) + ","  + str(pos) + "\n"
+                            self.isStart = False
+                        else:
+                            self.gameBoard.doMove(int(pos), int(pos), 1)
+                            self.output = str(pos) + ","  + str(pos) + "\n"
+                            self.isStart = False
+                        return
+                    pos = find_move(self.gameBoard, self.boardSize)
+                    # pos = randPos(self.gameBoard, self.boardSize)
                     move = str(pos[0]) + "," + str(pos[1]) + "\n"
                     self.gameBoard.doMove(pos[0], pos[1], 1)
                     self.output = move
@@ -146,9 +194,13 @@ class Protocol:
         score -= check_patterns(self.gameBoard, patternsEnemyThree) * 8
         score -= check_patterns(self.gameBoard, patternsEnemyTwo) * 4
         if (player == 2):
-            score -= score * 2
-        print("le score: ")
-        print(score)
+            score += check_patterns(self.gameBoard, patternsEnemyFour) * 16
+            score += check_patterns(self.gameBoard, patternsEnemyThree) * 8
+            score += check_patterns(self.gameBoard, patternsEnemyTwo) * 4
+            score -= check_patterns(self.gameBoard, patternsAllyFour) * 16
+            score -= check_patterns(self.gameBoard, patternsAllyThree) * 8
+            score -= check_patterns(self.gameBoard, patternsAllyTwo) * 4
+        return (score)
 
     def computeInput(self, args, file):
         self.arg = self.input.split()
