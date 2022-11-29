@@ -88,15 +88,13 @@ class Protocol:
                         self.gameBoard.doMove(pos, pos, 1)
                         self.output = str(pos) + ","  + str(pos) + "\n"
                         self.isStart = False
-                    else:
-                        self.gameBoard.doMove(int(pos), int(pos), 1)
-                        self.output = str(pos) + ","  + str(pos) + "\n"
-                        self.isStart = False
-                    return
+                        return
                 pos = find_move(self.gameBoard, self.boardSize)
-                # pos = randPos(self.gameBoard, self.boardSize)
+                if (pos[0] == -1 and pos[1] == -1):
+                    pos = randPos(self.gameBoard, self.boardSize)
                 move = str(pos[0]) + "," + str(pos[1]) + "\n"
                 self.gameBoard.doMove(pos[0], pos[1], 1)
+                self.output = move.doMove(pos[0], pos[1], 1)
                 self.output = move
             # self.gameBoard.displayBoard()
             # t.stop()
@@ -148,12 +146,10 @@ class Protocol:
                             self.gameBoard.doMove(pos, pos, 1)
                             self.output = str(pos) + ","  + str(pos) + "\n"
                             self.isStart = False
-                        else:
-                            self.gameBoard.doMove(int(pos), int(pos), 1)
-                            self.output = str(pos) + ","  + str(pos) + "\n"
-                            self.isStart = False
-                        return
+                            return
                     pos = find_move(self.gameBoard, self.boardSize)
+                    if (pos[0] == -1 and pos[1] == -1):
+                        pos = randPos(self.gameBoard, self.boardSize)
                     move = str(pos[0]) + "," + str(pos[1]) + "\n"
                     self.gameBoard.doMove(pos[0], pos[1], 1)
                     self.output = move
