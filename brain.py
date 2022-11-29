@@ -81,6 +81,12 @@ def is_pawn_around(board, boardSize, x, y, player) -> bool:
     if ((x - 1) >= 0):
         if (board.board[x - 1][y] == player):  # GAUCHE
             return (True)
+    if ((y - 1) >= 0):
+        if (board.board[x][y - 1] == player): # HAUT
+            return (True)
+    if ((y + 1) < boardSize):
+        if (board.board[x][y + 1] == player): # BAS
+            return (True)
     if ((x + 1) < boardSize and (y + 1) < boardSize): # BAS DROITE
         if (board.board[x + 1][y + 1] == player):
             return (True)

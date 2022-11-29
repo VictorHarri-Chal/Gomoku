@@ -148,12 +148,15 @@ def find_move(board, boardSize) -> tuple:
     for cnt in range(boardSize):
         for count in range(boardSize):
             if (board.isCaseUsable(cnt, count) == True and is_pawn_around(board, boardSize, cnt, count, 1) == True):
+                print("case: ", cnt, ",", count)
                 board.doMove(cnt, count, 1)
                 temp = evaluation(board, 1)
+                #print("score of " + cnt + " " + count + " :" + score, flush=True)
+                print("Value = " , value, flush=True)
                 if (temp > value):
+                    print("BETTER MOVE FOUND")
                     x = cnt
                     y = count
                     value = temp
-                    # print("Value = {}" .format(value), flush=True)
                 board.removeMove(cnt, count)
     return (x, y)

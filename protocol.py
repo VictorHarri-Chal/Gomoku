@@ -194,12 +194,7 @@ class Protocol:
         score -= check_patterns(self.gameBoard, patternsEnemyThree) * 8
         score -= check_patterns(self.gameBoard, patternsEnemyTwo) * 4
         if (player == 2):
-            score += check_patterns(self.gameBoard, patternsEnemyFour) * 16
-            score += check_patterns(self.gameBoard, patternsEnemyThree) * 8
-            score += check_patterns(self.gameBoard, patternsEnemyTwo) * 4
-            score -= check_patterns(self.gameBoard, patternsAllyFour) * 16
-            score -= check_patterns(self.gameBoard, patternsAllyThree) * 8
-            score -= check_patterns(self.gameBoard, patternsAllyTwo) * 4
+            score -= score * 2 
         return (score)
 
     def computeInput(self, args, file):
