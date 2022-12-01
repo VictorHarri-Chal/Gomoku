@@ -27,10 +27,10 @@ class Protocol:
     def readInput(self, args, file):
         if len(args) == 2:
             self.input = file.readline()
-            print("DEBUG " + self.input)
+            # print("DEBUG " + self.input)
         elif len(args) == 1:
             self.input = input()
-            print("DEBUG " + self.input)
+            # print("DEBUG " + self.input)
 
     # Print output which is in self.output
     
