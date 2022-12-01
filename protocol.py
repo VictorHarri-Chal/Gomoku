@@ -54,14 +54,11 @@ class Protocol:
 
     def turn(self, arg1) -> str:
         try:
-            # t = Timer()
-            # t.start()if (self.isStart == True):
             value = arg1.split(',')
             value1 = int(value[0])
             value2 = int(value[1])
             self.gameBoard.doMove(value1, value2, 2)
             self.move_manager()
-            # t.stop()
         except ValueError:
             return ("ERROR turn command\n")
 
@@ -156,14 +153,19 @@ class Protocol:
             self.printOutput()
 
     def move_manager(self):
+        t = Timer()
+        t.start()
         pos = self.is_mandatory_move()
         if (pos[0] == -1 and pos[1] == -1):
             if (self.isStart == True):
-                pos = self.play_first_move()
+                pos = self.play_first_move(t)
             else:
-                pos = find_move(self.gameBoard, self.boardSize)
+                pos = find_move(self.gameBoard, self.boardSize, t)
+                if (pos[0] == -1 and pos[1] == -1):
+                    pos = randPos(self.gameBoard, self.boardSize)
         self.gameBoard.doMove(pos[0], pos[1], 1)
         self.output = str(pos[0]) + "," + str(pos[1]) + "\n"
+        t.stop()
         
     def is_mandatory_move(self):
         res_match = is_matching_pattern(self.gameBoard, patternsAllyFour, 0)
@@ -180,7 +182,7 @@ class Protocol:
             return (res_match_enemy3[1], res_match_enemy3[2])
         return (-1, -1)
     
-    def play_first_move(self):
+    def play_first_move(self, t):
         pos = (self.boardSize - 1) / 2
         pos = pos.__round__()
         if (self.gameBoard.board[pos][pos] == 0):
@@ -188,7 +190,7 @@ class Protocol:
             self.output = str(pos) + ","  + str(pos) + "\n"
             self.isStart = False
             return (pos, pos)
-        pos = find_move(self.gameBoard, self.boardSize)
+        pos = find_move(self.gameBoard, self.boardSize, t)
         if (pos[0] == -1 and pos[1] == -1):
             pos = randPos(self.gameBoard, self.boardSize)
         return (pos[0], pos[1])
