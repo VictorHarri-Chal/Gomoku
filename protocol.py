@@ -27,9 +27,10 @@ class Protocol:
     def readInput(self, args, file):
         if len(args) == 2:
             self.input = file.readline()
-            myPrint(self.input, "")
+            # print("DEBUG " + self.input)
         elif len(args) == 1:
             self.input = input()
+            # print("DEBUG " + self.input)
 
     # Print output which is in self.output
     
@@ -108,20 +109,14 @@ class Protocol:
 
     def score(self, player):
         score = 0
-        if (player == 1):
-            score += check_patterns(self.gameBoard, patternsAllyFour) * 16
-            score += check_patterns(self.gameBoard, patternsAllyThree) * 8
-            score += check_patterns(self.gameBoard, patternsAllyTwo) * 4
-            score -= check_patterns(self.gameBoard, patternsEnemyFour) * 16
-            score -= check_patterns(self.gameBoard, patternsEnemyThree) * 8
-            score -= check_patterns(self.gameBoard, patternsEnemyTwo) * 4
+        score += check_patterns(self.gameBoard, patternsAllyFour) * 16
+        score += check_patterns(self.gameBoard, patternsAllyThree) * 8
+        score += check_patterns(self.gameBoard, patternsAllyTwo) * 4
+        score -= check_patterns(self.gameBoard, patternsEnemyFour) * 16
+        score -= check_patterns(self.gameBoard, patternsEnemyThree) * 8
+        score -= check_patterns(self.gameBoard, patternsEnemyTwo) * 4
         if (player == 2):
-            score += check_patterns(self.gameBoard, patternsEnemyFour) * 16
-            score += check_patterns(self.gameBoard, patternsEnemyThree) * 8
-            score += check_patterns(self.gameBoard, patternsEnemyTwo) * 4
-            score -= check_patterns(self.gameBoard, patternsAllyFour) * 16
-            score -= check_patterns(self.gameBoard, patternsAllyThree) * 8
-            score -= check_patterns(self.gameBoard, patternsAllyTwo) * 4
+            score -= score * 2 
         return (score)
 
     def computeInput(self, args, file):
@@ -149,7 +144,7 @@ class Protocol:
         elif (self.arg[0] == "DISPLAY"):
             self.gameBoard.displayBoard()
         elif (self.arg[0] == "SCORE"):
-            self.score(1)
+            self.score(2)
             self.printOutput()
 
     def move_manager(self):
