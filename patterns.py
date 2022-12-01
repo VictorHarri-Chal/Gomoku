@@ -140,14 +140,14 @@ def evaluation(board, player) -> int:
         score -= check_patterns(board, patternsAllyTwo) * 4
     return (score)
 
-def find_move(board, boardSize) -> tuple:
+def find_move(board, boardSize, t) -> tuple:
     x = -1
     y = -1
     value = 0
     temp = 0
     for cnt in range(boardSize):
         for count in range(boardSize):
-            if (board.isCaseUsable(cnt, count) == True and is_pawn_around(board, boardSize, cnt, count, 1) == True):
+            if (is_pawn_around(board, boardSize, cnt, count, 1) == True and board.isCaseUsable(cnt, count) == True):
                 board.doMove(cnt, count, 1)
                 temp = evaluation(board, 1)
                 if (temp > value):
@@ -156,4 +156,6 @@ def find_move(board, boardSize) -> tuple:
                     value = temp
                     # print("Value = {}" .format(value), flush=True)
                 board.removeMove(cnt, count)
+            if t.getTime() > 4.7:
+                return (x, y)
     return (x, y)
