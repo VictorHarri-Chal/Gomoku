@@ -149,7 +149,7 @@ def evaluation(board, player) -> int:
         score -= score * 2
     return (score)
 
-def find_move(board, boardSize) -> tuple:
+def find_move(board, boardSize, t) -> tuple:
     x = -1
     y = -1
     value = 0
@@ -167,5 +167,8 @@ def find_move(board, boardSize) -> tuple:
                     x = cnt
                     y = count
                     value = temp
-                #print(" = Value" , value, flush=True)
+                    # print("Value = {}" .format(value), flush=True)
+                board.removeMove(cnt, count)
+            if t.getTime() > 4.7:
+                return (x, y)
     return (x, y)
